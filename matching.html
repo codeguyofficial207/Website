@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red and Black Technology Memory Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #FF0000, #000000);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #match-counter {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #game-board {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            background: linear-gradient(to right, #000000, #FF0000);
+            color: #fff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease, transform 0.2s ease, opacity 0.5s ease;
+            text-align: center; /* Center-align text */
+            transform-style: preserve-3d;
+        }
+
+        .card .inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .card .text {
+            display: none;
+            transform: rotateY(0deg); /* Rotate text */
+            transition: transform 0.2s ease;
+        }
+
+        .card.flipped .inner {
+            transform: rotateY(180deg); /* Rotate both card and text when flipped */
+        }
+
+        .card.flipped .text {
+            display: block;
+            transform: rotateY(180deg); /* Rotate text when flipped */
+        }
+
+        .card.matched {
+            opacity: 0; /* Make matched pairs disappear */
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="match-counter">Matches: 0</div>
+    <div id="game-board"></div>
+
+    <script>
+        const technologyTerms = [
+            'HTML', 'CSS', 'JavaScript', 'Python',
+            'Java', 'React', 'Node.js', 'API',
+            'Database', 'Git', 'Cloud', 'Algorithm',
+            'Blockchain', 'IoT', 'Machine Learning', 'Virtual Reality'
+        ];
+
+        const shuffledTerms = shuffle([...technologyTerms, ...technologyTerms]);
+
+        const gameBoard = document.getElementById('game-board');
+        const matchCounter = document.getElementById('match-counter');
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        function createCard(term, index) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.index = index;
+            card.dataset.term = term; // Store the term in a data attribute
+            card.addEventListener('click', flipCard);
+
+            const innerContainer = document.createElement('div');
+            innerContainer.classList.add('inner');
+
+            const textContainer = document.createElement('div');
+            textContainer.classList.add('text');
+            textContainer.textContent = term;
+
+            innerContainer.appendChild(textContainer);
+            card.appendChild(innerContainer);
+
+            gameBoard.appendChild(card);
+        }
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function flipCard() {
+            if (flippedCards.length < 2 && !flippedCards.includes(this)) {
+                flippedCards.push(this);
+
+                // Flip the card and text
+                this.classList.toggle('flipped');
+
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 1000);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            const isMatch = card1.dataset.term === card2.dataset.term;
+
+            if (isMatch) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+                updateMatchCounter();
+
+                if (matchedPairs === technologyTerms.length) {
+                    alert('Congratulations! You matched all pairs!');
+                }
+            } else {
+                // Revert to the original styles
+                card1.classList.toggle('flipped');
+                card2.classList.toggle('flipped');
+            }
+
+            flippedCards = [];
+        }
+
+        function updateMatchCounter() {
+            matchCounter.textContent = `Matches: ${matchedPairs}`;
+        }
+
+        shuffledTerms.forEach(createCard);
+    </script>
+</body>

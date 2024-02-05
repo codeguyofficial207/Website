@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Corridor Digital Video</title>
+</head>
+<body>
+
+<h1>Random Corridor Digital Video</h1>
+<button onclick="getRandomVideo()">Get Random Video</button>
+<p id="videoLink"></p>
+
+<script>
+function getRandomVideo() {
+  // Array of Corridor Digital video IDs
+  const videoIds = [
+    '_lDM1nAmPHI',
+    '3vHvOyZ0GbY',
+    '3dBiNGufIJbe',
+    // Add more video IDs as needed
+  ];
+
+  // Get a random index from the array
+  const randomIndex = Math.floor(Math.random() * videoIds.length);
+
+  // Get the random video ID
+  const randomVideoId = videoIds[randomIndex];
+
+  // Construct the YouTube video link
+  const youtubeLink = `https://www.youtube.com/watch?v=${randomVideoId}`;
+
+  // Display the link
+  document.getElementById('videoLink').innerHTML = `<a href="${youtubeLink}" target="_blank">${youtubeLink}</a>`;
+}
+</script>
+
+</body>
+</html>

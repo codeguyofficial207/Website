@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History of Cars Quiz</title>
+ <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        span.correct {
+            color: #4caf50;
+        }
+        span.incorrect {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>History of Cars Quiz</h1>
+    
+    <form id="quiz-form" onsubmit="return false;">
+        <!-- Question 1 -->
+        <div class="question">
+            <p>1. When was the first automobile invented?</p>
+            <label><input type="radio" name="q1" value="a"> 1885</label>
+            <label><input type="radio" name="q1" value="b"> 1901</label>
+            <label><input type="radio" name="q1" value="c"> 1920</label>
+            <span id="result_q1"></span>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question">
+            <p>2. Who is often credited with inventing the first practical automobile?</p>
+            <label><input type="radio" name="q2" value="a"> Karl Benz</label>
+            <label><input type="radio" name="q2" value="b"> Henry Ford</label>
+            <label><input type="radio" name="q2" value="c"> Nikola Tesla</label>
+            <span id="result_q2"></span>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question">
+            <p>3. In what year did Henry Ford introduce the assembly line for automobile production?</p>
+            <label><input type="radio" name="q3" value="a"> 1908</label>
+            <label><input type="radio" name="q3" value="b"> 1923</label>
+            <label><input type="radio" name="q3" value="c"> 1935</label>
+            <span id="result_q3"></span>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question">
+            <p>4. Which car company produced the first mass-produced electric car in the modern era?</p>
+            <label><input type="radio" name="q4" value="a"> Tesla</label>
+            <label><input type="radio" name="q4" value="b"> Nissan</label>
+            <label><input type="radio" name="q4" value="c"> Chevrolet</label>
+            <span id="result_q4"></span>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question">
+            <p>5. What was the first commercially successful internal combustion engine-powered car?</p>
+            <label><input type="radio" name="q5" value="a"> Ford Model T</label>
+            <label><input type="radio" name="q5" value="b"> Benz Patent-Motorwagen</label>
+            <label><input type="radio" name="q5" value="c"> Toyota Prius</label>
+            <span id="result_q5"></span>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question">
+            <p>6. In what year did the Ford Mustang make its debut?</p>
+            <label><input type="radio" name="q6" value="a"> 1964</label>
+            <label><input type="radio" name="q6" value="b"> 1972</label>
+            <label><input type="radio" name="q6" value="c"> 1985</label>
+            <span id="result_q6"></span>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question">
+            <p>7. What is the best-selling car model of all time?</p>
+            <label><input type="radio" name="q7" value="a"> Toyota Corolla</label>
+            <label><input type="radio" name="q7" value="b"> Ford F-Series</label>
+            <label><input type="radio" name="q7" value="c"> Volkswagen Beetle</label>
+            <span id="result_q7"></span>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question">
+            <p>8. Who is known as the father of the modern SUV?</p>
+            <label><input type="radio" name="q8" value="a"> Enzo Ferrari</label>
+            <label><input type="radio" name="q8" value="b"> Ferdinand Porsche</label>
+            <label><input type="radio" name="q8" value="c"> Willis Carrier</label>
+            <span id="result_q8"></span>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="question">
+            <p>9. What car brand introduced the first hybrid vehicle to the market?</p>
+            <label><input type="radio" name="q9" value="a"> Toyota</label>
+            <label><input type="radio" name="q9" value="b"> Honda</label>
+            <label><input type="radio" name="q9" value="c"> Ford</label>
+            <span id="result_q9"></span>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question">
+            <p>10. Which country is known for producing the iconic sports car brand Ferrari?</p>
+            <label><input type="radio" name="q10" value="a"> Italy</label>
+            <label><input type="radio" name="q10" value="b"> Germany</label>
+            <label><input type="radio" name="q10" value="c"> United States</label>
+            <span id="result_q10"></span>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="question">
+            <p>11. What was the first car to feature airbags?</p>
+            <label><input type="radio" name="q11" value="a"> Mercedes-Benz S-Class</label>
+            <label><input type="radio" name="q11" value="b"> Volvo 240</label>
+            <label><input type="radio" name="q11" value="c"> Ford Pinto</label>
+            <span id="result_q11"></span>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="question">
+            <p>12. In what year did the first fully self-driving car complete a coast-to-coast trip across the U.S.?</p>
+            <label><input type="radio" name="q12" value="a"> 2010</label>
+            <label><input type="radio" name="q12" value="b"> 2015</label>
+            <label><input type="radio" name="q12" value="c"> 2018</label>
+            <span id="result_q12"></span>
+        </div>
+
+        <!-- Question 13 -->
+        <div class="question">
+            <p>13. Which car brand is famous for its "Silver Arrow" racing cars?</p>
+            <label><input type="radio" name="q13" value="a"> Ferrari</label>
+            <label><input type="radio" name="q13" value="b"> Mercedes-Benz</label>
+            <label><input type="radio" name="q13" value="c"> Bugatti</label>
+            <span id="result_q13"></span>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="question">
+            <p>14. What does the acronym SUV stand for?</p>
+            <label><input type="radio" name="q14" value="a"> Sports Utility Vehicle</label>
+            <label><input type="radio" name="q14" value="b"> Super Urban Vehicle</label>
+            <label><input type="radio" name="q14" value="c"> Special Utility Van</label>
+            <span id="result_q14"></span>
+        </div>
+
+        <!-- Question 15 -->
+        <div class="question">
+            <p>15. Which car brand is known for its luxury electric vehicles?</p>
+            <label><input type="radio" name="q15" value="a"> BMW</label>
+            <label><input type="radio" name="q15" value="b"> Tesla</label>
+            <label><input type="radio" name="q15" value="c"> Jaguar</label>
+            <span id="result_q15"></span>
+        </div>
+
+        <!-- Question 16 -->
+        <div class="question">
+            <p>16. What was the first car to reach a speed of over 100 mph?</p>
+            <label><input type="radio" name="q16" value="a"> Bugatti Veyron</label>
+            <label><input type="radio" name="q16" value="b"> Mercedes Simplex</label>
+            <label><input type="radio" name="q16" value="c"> Duesenberg Model J</label>
+            <span id="result_q16"></span>
+        </div>
+
+        <!-- Question 17 -->
+        <div class="question">
+            <p>17. Which car brand is known for the iconic 911 model?</p>
+            <label><input type="radio" name="q17" value="a"> Ferrari</label>
+            <label><input type="radio" name="q17" value="b"> Porsche</label>
+            <label><input type="radio" name="q17" value="c"> Lamborghini</label>
+            <span id="result_q17"></span>
+        </div>
+
+        <!-- Question 18 -->
+        <div class="question">
+            <p>18. Who designed the first Volkswagen Beetle?</p>
+            <label><input type="radio" name="q18" value="a"> Ferdinand Porsche</label>
+            <label><input type="radio" name="q18" value="b"> Enzo Ferrari</label>
+            <label><input type="radio" name="q18" value="c"> Ettore Bugatti</label>
+            <span id="result_q18"></span>
+        </div>
+
+        <!-- Question 19 -->
+        <div class="question">
+            <p>19. In what year did the Mini Cooper make its debut?</p>
+            <label><input type="radio" name="q19" value="a"> 1959</label>
+            <label><input type="radio" name="q19" value="b"> 1965</label>
+            <label><input type="radio" name="q19" value="c"> 1972</label>
+            <span id="result_q19"></span>
+        </div>
+
+        <!-- Question 20 -->
+        <div class="question">
+            <p>20. Which car brand is associated with the slogan "The Ultimate Driving Machine"?</p>
+            <label><input type="radio" name="q20" value="a"> Mercedes-Benz</label>
+            <label><input type="radio" name="q20" value="b"> BMW</label>
+            <label><input type="radio" name="q20" value="c"> Audi</label>
+            <span id="result_q20"></span>
+        </div>
+
+        <!-- Add more questions here... -->
+
+        <button onclick="submitQuiz()">Submit Answers</button>
+    </form>
+
+    <div id="results"></div>
+</div>
+
+<script>
+    function submitQuiz() {
+        // Collect user responses
+        let answers = [];
+        for (let i = 1; i <= 20; i++) {
+            const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+            if (selectedOption) {
+                answers.push(selectedOption.value);
+            } else {
+                answers.push(null);
+            }
+        }
+
+        // Display results
+        let resultsHtml = "<h2>Quiz Results</h2>";
+        for (let i = 0; i < answers.length; i++) {
+            const questionNum = i + 1;
+            const resultId = `result_q${questionNum}`;
+            resultsHtml += `<p>Question ${questionNum}: ${answers[i] === "a" ? "Correct" : "Incorrect"}</p>`;
+            document.getElementById(resultId).innerHTML = answers[i] === "a" ? "<span style='color: green;'>Correct</span>" : "<span style='color: red;'>Incorrect</span>";
+        }
+
+        document.getElementById("results").innerHTML = resultsHtml;
+    }
+</script>
+
+</body>
+</html>

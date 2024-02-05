@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truth or Dare Coin Flipper</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f0f0f0; /* Light gray background */
+        }
+
+        h1 {
+            color: #3498db; /* Blue heading color */
+        }
+
+        p {
+            color: #555; /* Dark gray paragraph text color */
+        }
+
+        #coin {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+            overflow: hidden;
+            perspective: 1000px;
+            background-color: #f39c12; /* Orange background for the coin */
+        }
+
+        #coin .face {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease-out;
+        }
+
+        #coin .truth {
+            background-color: #3498db; /* Blue for Truth face */
+            transform: rotateX(0deg);
+        }
+
+        #coin .dare {
+            background-color: #e74c3c; /* Red for Dare face */
+            transform: rotateX(180deg);
+        }
+
+        #coin.flipping {
+            animation: flip 1s ease-out;
+        }
+
+        @keyframes flip {
+            0% {
+                transform: rotateX(0deg);
+            }
+            50% {
+                transform: rotateX(180deg);
+            }
+            100% {
+                transform: rotateX(0deg);
+            }
+        }
+
+        #result {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #27ae60; /* Green color for the result text */
+        }
+
+        button {
+            background-color: #3498db; /* Blue button background color */
+            color: #fff; /* White button text color */
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Truth or Dare Coin Flipper</h1>
+    <p>Click the button to flip the colorful and bigger coin!</p>
+
+    <div id="coin" class="flipping">
+        <div class="face truth">Truth</div>
+        <div class="face dare">Dare</div>
+    </div>
+
+    <p id="result"></p>
+
+    <button onclick="flipCoin()">Flip Coin</button>
+
+    <script>
+        function flipCoin() {
+            // Disable button during the flips
+            document.querySelector('button').disabled = true;
+
+            const coin = document.getElementById('coin');
+            const resultElement = document.getElementById('result');
+
+            // Perform 10 quick flips
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    coin.classList.add('flipping');
+
+                    setTimeout(() => {
+                        coin.classList.remove('flipping');
+                    }, 100);
+                }, i * 120); // Add a small delay between flips
+            }
+
+            // Show the final result
+            setTimeout(() => {
+                const result = Math.random() < 0.5 ? 'truth' : 'dare';
+
+                // Display the result on the coin
+                coin.querySelector('.face.truth').style.transform = (result === 'truth') ? 'rotateX(0deg)' : 'rotateX(180deg)';
+                coin.querySelector('.face.dare').style.transform = (result === 'truth') ? 'rotateX(180deg)' : 'rotateX(0deg)';
+
+                // Display the result
+                resultElement.innerText = `You got: ${result.charAt(0).toUpperCase() + result.slice(1)}`;
+
+                // Enable the button after the flips
+                document.querySelector('button').disabled = false;
+            }, 1200); // Wait for the flips to complete
+        }
+    </script>
+
+</body>
+</html>

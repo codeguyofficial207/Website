@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Code</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+        }
+
+        .matrix-code-container {
+            position: absolute;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            white-space: nowrap;
+            user-select: none;
+            overflow: hidden;
+            animation: matrixScroll 10s linear infinite;
+        }
+
+        @keyframes matrixScroll {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-code-container">
+        <div class="matrix-code" id="matrixCode"></div>
+    </div>
+
+    <script>
+        function generateMatrixCode() {
+            const codeContainer = document.getElementById('matrixCode');
+            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=_+[]{}|;:,.<>?/`~';
+            
+            setInterval(() => {
+                const code = Array.from({ length: 50 }, () => characters[Math.floor(Math.random() * characters.length)]).join('');
+                codeContainer.innerText = code;
+            }, 2); // Reduced interval to 2 milliseconds
+        }
+
+        document.addEventListener('DOMContentLoaded', generateMatrixCode);
+    </script>
+</body>
+</html>

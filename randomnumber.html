@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Random Number Generator</title>
+<style>
+body {
+  text-align: center;
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: #3498db;
+}
+
+button {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #c0392b;
+}
+
+#result {
+  font-size: 48px;
+  color: #27ae60;
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  border-radius: 50%;
+  background-color: #f1c40f;
+  margin: 0 auto;
+}
+
+#button-container {
+  position: relative;
+}
+</style>
+</head>
+<body>
+<h1>Dynamic Random Number Generator</h1>
+<p>Click the button to generate a random number between 1 and 100:</p>
+<div id="result"></div>
+<div id="button-container">
+  <button onclick="startRandomAnimation()">Generate Random Number</button>
+</div>
+
+<script>
+function startRandomAnimation() {
+  const resultElement = document.getElementById('result');
+  resultElement.innerText = '...';
+
+  let count = 0;
+  const interval = setInterval(() => {
+    count++;
+    resultElement.innerText = Math.floor(Math.random() * 100) + 1;
+
+    if (count >= 30) {
+      clearInterval(interval);
+      resultElement.innerText = Math.floor(Math.random() * 100) + 1;
+    }
+  }, 100);
+}
+</script>
+</body>
+</html>

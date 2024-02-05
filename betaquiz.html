@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorful Technology Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 style="color: #007BFF;">Colorful Technology Quiz</h2>
+
+    <form id="quizForm" onsubmit="return false;">
+        <label>1. What does HTML stand for?
+            <br>
+            <input type="radio" name="q1" value="a"> HyperText Markup Language
+            <input type="radio" name="q1" value="b"> HyperText Modeling Language
+            <input type="radio" name="q1" value="c"> HyperText Management Language
+        </label>
+
+        <label>2. Which programming language is often used for web development?
+            <br>
+            <input type="radio" name="q2" value="a"> Python
+            <input type="radio" name="q2" value="b"> JavaScript
+            <input type="radio" name="q2" value="c"> Java
+        </label>
+
+        <label>3. What is the purpose of CSS?
+            <br>
+            <input type="radio" name="q3" value="a"> Database Management
+            <input type="radio" name="q3" value="b"> Styling Web Pages
+            <input type="radio" name="q3" value="c"> Server-side scripting
+        </label>
+
+        <label>4. Which of the following is a version control system?
+            <br>
+            <input type="radio" name="q4" value="a"> FTP
+            <input type="radio" name="q4" value="b"> Git
+            <input type="radio" name="q4" value="c"> HTTP
+        </label>
+
+        <label>5. What is the purpose of the "alt" attribute in an HTML image tag?
+            <br>
+            <input type="radio" name="q5" value="a"> Alternative text for the image
+            <input type="radio" name="q5" value="b"> Alignment of the image
+            <input type="radio" name="q5" value="c"> Altitude of the image
+        </label>
+
+        <label>6. Which company developed the Android operating system?
+            <br>
+            <input type="radio" name="q6" value="a"> Apple
+            <input type="radio" name="q6" value="b"> Microsoft
+            <input type="radio" name="q6" value="c"> Google
+        </label>
+
+        <label>7. What is the main function of a firewall in network security?
+            <br>
+            <input type="radio" name="q7" value="a"> Block unwanted emails
+            <input type="radio" name="q7" value="b"> Monitor website traffic
+            <input type="radio" name="q7" value="c"> Control and filter network access
+        </label>
+
+        <button onclick="submitQuiz()">Submit Quiz</button>
+    </form>
+
+    <script>
+        function submitQuiz() {
+            // Get user's answers
+            let q1 = document.querySelector('input[name="q1"]:checked');
+            let q2 = document.querySelector('input[name="q2"]:checked');
+            let q3 = document.querySelector('input[name="q3"]:checked');
+            let q4 = document.querySelector('input[name="q4"]:checked');
+            let q5 = document.querySelector('input[name="q5"]:checked');
+            let q6 = document.querySelector('input[name="q6"]:checked');
+            let q7 = document.querySelector('input[name="q7"]:checked');
+
+            // Check if all questions are answered
+            if (!q1 || !q2 || !q3 || !q4 || !q5 || !q6 || !q7) {
+                alert("Please answer all questions.");
+                return;
+            }
+
+            // Check answers and provide feedback
+            let score = 0;
+
+            if (q1.value === "a") score++;
+            if (q2.value === "b") score++;
+            if (q3.value === "b") score++;
+            if (q4.value === "b") score++;
+            if (q5.value === "a") score++;
+            if (q6.value === "c") score++;
+            if (q7.value === "c") score++;
+
+            alert("Your score: " + score + "/7");
+        }
+    </script>
+</body>
+</html>

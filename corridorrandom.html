@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Corridor Digital Video</title>
+   <style>
+    body {
+      background-color: #ecf0f1;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    h1 {
+      color: #3498db;
+    }
+
+    button {
+      background-color: #2ecc71;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #thumbnailContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    img {
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    p {
+      color: #333;
+      margin-top: 10px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #3498db;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Random Corridor Digital Video</h1>
+<button onclick="getRandomVideo()">Get Random Video</button>
+<div id="thumbnailContainer">
+  <div id="thumbnailAndTitle"></div>
+  <p id="videoLink"></p>
+</div>
+
+<script>
+async function getRandomVideo() {
+  const videoIds = [
+ 'hRFSXWDmBYM',
+    'lCCUTW5HWSY',
+    'ErzoS25SFa8',
+    '_olSOQJ4Qu4',
+    's8HfxioHxVg',
+   'NzLafsZWKxA',
+    'OPqzWGdAe_U',
+    'JVtkE8cgdOw',
+    'xUa2U3Cmawo',
+    'r2oXsHWrDhk',
+   'N5URPTP4G3k',
+    'eIJXOU83fqE',
+    '2mf4HuPk1as',
+    '7qYhIWUvt40',
+    'S626oBoPrGE',
+    'xP86FWPYSiA',
+    '333byRz_Qn0',
+    'gv9cdTh8cUo',
+    'XVQFCqmnBLs',
+    'sHpmXK81kds', 
+    // Add more video IDs as needed
+  ];
+
+  const randomIndex = Math.floor(Math.random() * videoIds.length);
+  const randomVideoId = videoIds[randomIndex];
+  const youtubeLink = `https://www.youtube.com/watch?v=${randomVideoId}`;
+
+  // Fetch video information using YouTube Data API
+  const apiKey = 'AIzaSyD2V10DmvM_K3Z7h5gNqK6C3q27qoVwa9U';
+  const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${randomVideoId}&key=${apiKey}`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    if (data.items && data.items.length > 0) {
+      const thumbnailUrl = data.items[0].snippet.thumbnails.medium.url;
+      const videoTitle = data.items[0].snippet.title;
+      
+      document.getElementById('thumbnailAndTitle').innerHTML = `<a href="${youtubeLink}" target="_blank"><img src="${thumbnailUrl}" alt="Video Thumbnail" width="320" height="180"></a>`;
+      document.getElementById('videoLink').innerHTML = `<p><a href="${youtubeLink}" target="_blank">${videoTitle}</a></p>`;
+    } else {
+      console.error('Error fetching video information');
+    }
+  } catch (error) {
+    console.error('Error fetching video information:', error);
+  }
+}
+</script>
+
+</body>
+</html>

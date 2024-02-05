@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>🎥 Screen Recorder 🎞️</title>
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #6c5ce7; /* Purple color */
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 20px;
+            background-color: #6c5ce7; /* Purple color */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #4834d4; /* Darker purple on hover */
+        }
+
+        video {
+            max-width: 100%;
+            margin-top: 20px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            color: #6c5ce7; /* Purple color */
+            font-size: 1.2em;
+        }
+
+        select, input {
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid #6c5ce7;
+            margin-top: 5px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎥 Screen Recorder 🎞️</h1>
+    <label>Resolution:
+        <select id="resolutionSelect">
+            <option value="fullhd">Full HD (1920x1080)</option>
+            <option value="hd">HD (1280x720)</option>
+            <option value="sd">SD (640x480)</option>
+        </select>
+    </label>
+    <label>Framerate:
+        <input type="number" id="framerateInput" min="1" max="30" step="1" value="30" />
+    </label>
+    <button id="startButton">Start Recording 🎬</button>
+    <button id="stopButton" disabled>Stop Recording ⏹️</button>
+    <video id="recordedVideo" controls></video>
+    
+    <script>
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const recordedVideo = document.getElementById('recordedVideo');
+        const resolutionSelect = document.getElementById('resolutionSelect');
+        const framerateInput = document.getElementById('framerateInput');
+        let mediaRecorder;
+        let recordedChunks = [];
+        let stream;
+
+        startButton.addEventListener('click', async () => {
+            stopButton.disabled = false;
+            startButton.disabled = true;
+
+            stream = await navigator.mediaDevices.getDisplayMedia({
+                video: {
+                    mediaSource: 'screen',
+                    width: { ideal: screen.width },
+                    height: { ideal: screen.height },
+                }
+            });
+
+            mediaRecorder = new MediaRecorder(stream, {
+                mimeType: 'video/webm; codecs=vp9',
+                videoBitsPerSecond: 10000000, // 10Mbps
+            });
+
+            mediaRecorder.ondataavailable = e => {
+                if (e.data.size > 0) {
+                    recordedChunks.push(e.data);
+                }
+            };
+
+            mediaRecorder.onstop = () => {
+                const recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
+                recordedVideo.src = URL.createObjectURL(recordedBlob);
+
+                stream.getVideoTracks().forEach(track => track.stop());
+            };
+
+            mediaRecorder.start();
+        });
+
+        stopButton.addEventListener('click', () => {
+            stopButton.disabled = true;
+            startButton.disabled = false;
+
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+        });
+
+    </script>
+</body>
+</html>

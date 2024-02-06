@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series Tracker Chart with Watched Status</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            color: #333;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, button, table {
+            border: none;
+            border-radius: 20px; /* Rounded borders */
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="number"] {
+            width: 100%;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        input[type="checkbox"] {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Your Favorite Shows</h1>
+
+    <form id="seriesForm">
+        <label for="showName">Show Name:</label>
+        <input type="text" id="showName" name="showName" required>
+        
+        <label for="numSeasons">Number of Seasons:</label>
+        <input type="number" id="numSeasons" name="numSeasons" required>
+
+        <div id="seasonInputs"></div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="chartContainer"></div>
+
+    <script>
+        const seriesForm = document.getElementById('seriesForm');
+        const seasonInputs = document.getElementById('seasonInputs');
+        const chartContainer = document.getElementById('chartContainer');
+
+        seriesForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const showName = document.getElementById('showName').value;
+            const numSeasons = parseInt(document.getElementById('numSeasons').value, 10);
+
+            let seriesData = {
+                showName: showName,
+                seasons: []
+            };
+
+            let chartHTML = '';
+
+            for (let i = 1; i <= numSeasons; i++) {
+                const numEpisodes = parseInt(document.getElementById(`numEpisodes${i}`).value, 10);
+
+                chartHTML += `<h2>Season ${i}</h2><table><thead><tr><th>Episode</th><th>Watched</th></tr></thead><tbody>`;
+
+                for (let j = 1; j <= numEpisodes; j++) {
+                    chartHTML += `
+                        <tr>
+                            <td>Episode ${j}</td>
+                            <td><input type="checkbox" id="episode${i}-${j}" name="episode${i}-${j}"></td>
+                        </tr>
+                    `;
+                }
+
+                chartHTML += '</tbody></table>';
+            }
+
+            chartContainer.innerHTML = chartHTML;
+        });
+
+        function createSeasonInputFields(numSeasons) {
+            let seasonInputsHTML = '';
+            for (let i = 1; i <= numSeasons; i++) {
+                seasonInputsHTML += `
+                    <div>
+                        <h3>Season ${i}</h3>
+                        <label for="numEpisodes${i}">Number of Episodes:</label>
+                        <input type="number" id="numEpisodes${i}" name="numEpisodes${i}" required>
+                    </div>
+                `;
+            }
+            seasonInputs.innerHTML = seasonInputsHTML;
+        }
+
+        document.getElementById('numSeasons').addEventListener('input', function() {
+            const numSeasons = this.value;
+            createSeasonInputFields(numSeasons);
+        });
+    </script>
+</body>
+</html>

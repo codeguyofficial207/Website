@@ -3,26 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>🎥 Screen Recorder 🎞️</title>
-    
     <style>
         body {
             font-family: 'Arial', sans-serif;
             text-align: center;
             background-color: #f8f9fa;
             color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        h1 {
-            margin-bottom: 20px;
-            color: #6c5ce7; /* Purple color */
         }
 
         button {
@@ -62,6 +49,7 @@
             margin-top: 5px;
             font-size: 1em;
         }
+
     </style>
 </head>
 <body>
@@ -79,7 +67,6 @@
     <button id="startButton">Start Recording 🎬</button>
     <button id="stopButton" disabled>Stop Recording ⏹️</button>
     <video id="recordedVideo" controls></video>
-    
     <script>
         const startButton = document.getElementById('startButton');
         const stopButton = document.getElementById('stopButton');
@@ -131,7 +118,5 @@
                 mediaRecorder.stop();
             }
         });
-
     </script>
 </body>
-</html>

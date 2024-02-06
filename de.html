@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diaper Change Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .time {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .error {
+            color: red;
+        }
+
+        input, select {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="text"]::placeholder {
+            color: #ccc;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Diaper Change Tracker</h1>
+        <label for="diaperType">Diaper Type:</label>
+        <select id="diaperType">
+            <option value="wet">Wet</option>
+            <option value="dirty">Dirty</option>
+        </select>
+        <label for="location">Location:</label>
+        <input type="text" id="location" placeholder="Enter the location">
+        <label for="whatHappened">What Happened:</label>
+        <input type="text" id="whatHappened" placeholder="Enter what happened">
+        <label for="notes">Notes:</label>
+        <input type="text" id="notes" placeholder="Enter any additional notes">
+        <button onclick="logDiaperChange()">Log Diaper Change</button>
+        <ul id="diaperChanges"></ul>
+        <p id="error" class="error"></p>
+    </div>
+
+    <script>
+        function logDiaperChange() {
+            const diaperType = document.getElementById('diaperType').value;
+            const location = document.getElementById('location').value;
+            const whatHappened = document.getElementById('whatHappened').value;
+            
+            if (!diaperType || !location || !whatHappened) {
+                document.getElementById('error').textContent = 'Please fill out all required fields';
+                return;
+            }
+            
+            const now = new Date();
+            const time = now.toLocaleString('en-US');
+            const notes = document.getElementById('notes').value;
+
+            const diaperChanges = document.getElementById('diaperChanges');
+            const newChange = document.createElement('li');
+            newChange.innerHTML = `<span class="time">${time}</span> - ${diaperType} diaper change`;
+            if (location) {
+                newChange.innerHTML += `<br><strong>Location:</strong> ${location}`;
+            }
+            if (whatHappened) {
+                newChange.innerHTML += `<br><strong>What Happened:</strong> ${whatHappened}`;
+            }
+            if (notes) {
+                newChange.innerHTML += `<br><strong>Notes:</strong> ${notes}`;
+            }
+            diaperChanges.prepend(newChange);
+
+            // Reset input fields and error message
+            document.getElementById('diaperType').value = 'wet';
+            document.getElementById('location').value = '';
+            document.getElementById('whatHappened').value = '';
+            document.getElementById('notes').value = '';
+            document.getElementById('error').textContent = '';
+        }
+    </script>
+</body>
+
+</html>

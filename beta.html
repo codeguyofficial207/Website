@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series Tracker Chart with Watched Status - Multiple Shows</title>
+    <style>
+        /* CSS Styles */
+    </style>
+</head>
+<body>
+    <h1>Add Your Favorite Shows</h1>
+
+    <form id="seriesForm">
+        <div id="showsContainer">
+            <div class="showSection">
+                <label for="showName">Show Name:</label>
+                <input type="text" class="showName" name="showName" required>
+
+                <label for="numSeasons">Number of Seasons:</label>
+                <input type="number" class="numSeasons" name="numSeasons" required>
+
+                <div class="seasonInputs"></div>
+            </div>
+        </div>
+
+        <button type="button" id="addShowBtn">Add Another Show</button>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="chartContainer"></div>
+
+    <script>
+        const addShowBtn = document.getElementById('addShowBtn');
+        const showsContainer = document.getElementById('showsContainer');
+        let showCount = 1;
+
+        addShowBtn.addEventListener('click', function() {
+            showCount++;
+
+            const newShowSection = document.createElement('div');
+            newShowSection.classList.add('showSection');
+            newShowSection.innerHTML = `
+                <label for="showName">Show Name:</label>
+                <input type="text" class="showName" name="showName" required>
+                
+                <label for="numSeasons">Number of Seasons:</label>
+                <input type="number" class="numSeasons" name="numSeasons" required>
+
+                <div class="seasonInputs"></div>
+            `;
+
+            showsContainer.appendChild(newShowSection);
+        });
+
+        document.getElementById('seriesForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Process form data here for each show section
+            const showSections = document.querySelectorAll('.showSection');
+
+            showSections.forEach((showSection, index) => {
+                const showName = showSection.querySelector('.showName').value;
+                const numSeasons = parseInt(showSection.querySelector('.numSeasons').value, 10);
+                
+                console.log(`Show ${index + 1}: ${showName}, Seasons: ${numSeasons}`);
+
+                // Additional processing for seasons and episodes can be added here
+            });
+        });
+    </script>
+</body>
+</html>

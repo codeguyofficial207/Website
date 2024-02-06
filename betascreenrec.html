@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Professional Screen Recorder 🌈</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #79f1a4, #0e5cad);
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    margin-top: 50px;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 20px;
+  }
+
+  button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+  }
+
+  #recordedVideo {
+    width: 70%;
+    margin: 20px auto;
+    border: 2px solid #f39c12;
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+<h1>Professional Screen Recorder</h1>
+<button id="startBtn">Start Recording</button>
+<button id="stopBtn" disabled>Stop Recording</button>
+<video id="recordedVideo" controls></video>
+
+<script>
+let stream;
+let mediaRecorder;
+let recordedBlobs = [];
+const startBtn = document.getElementById('startBtn');
+const stopBtn = document.getElementById('stopBtn');
+const recordedVideo = document.getElementById('recordedVideo');
+
+startBtn.addEventListener('click', async () => {
+  stream = await navigator.mediaDevices.getDisplayMedia({
+    video: { mediaSource: "screen" }
+  });
+
+  mediaRecorder = new MediaRecorder(stream);
+
+  mediaRecorder.ondataavailable = (event) => {
+    if (event.data.size > 0) {
+      recordedBlobs.push(event.data);
+    }
+  };
+
+  mediaRecorder.onstop = () => {
+    const videoBlob = new Blob(recordedBlobs, { type: 'video/webm' });
+    const videoUrl = URL.createObjectURL(videoBlob);
+    recordedVideo.src = videoUrl;
+
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.href = videoUrl;
+    a.download = 'recorded-video.webm';
+    a.click();
+
+    window.URL.revokeObjectURL(videoUrl);
+
+    stream.getTracks().forEach(track => track.stop());
+  };
+
+  mediaRecorder.start();
+  
+  startBtn.disabled = true;
+  stopBtn.disabled = false;
+});
+
+stopBtn.addEventListener('click', () => {
+  mediaRecorder.stop();
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+});
+</script>
+</body>
+</html>

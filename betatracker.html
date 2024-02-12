@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Your existing CSS styles here */
+    /* Custom styling */
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 20px auto;
+      text-align: center;
+    }
+    h1 {
+      color: #007bff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    p {
+      color: #444;
+    }
+    input[type="text"], button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    input[type="text"] {
+      width: 70%;
+    }
+    button {
+      width: 30%;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #results {
+      margin-top: 20px;
+      color: #333;
+      text-align: left;
+    }
+    .show {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #ff6600;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 5px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Episode Tracker</h1>
+    <p>Enter the name of a TV show and see how many episodes you have watched.</p>
+    <input id="show-name" type="text" placeholder="Enter show name" />
+    <button id="search-button" onclick="searchShow()">Search</button>
+    <div id="results"></div>
+  </div>
+  <script>
+    // Define a function to search for a show using the TVmaze API
+    function searchShow() {
+      // Get the value of the input element
+      let showName = document.getElementById("show-name").value;
+      // If the input is not empty, make a request to the API
+      if (showName) {
+        // Construct the URL with the show name as a query parameter
+        let url = "https://api.tvmaze.com/search/shows?q=" + showName;
+        // Create a new XMLHttpRequest object
+        let xhr = new XMLHttpRequest();
+        // Set the request method and the URL
+        xhr.open("GET", url);
+        // Define what to do when the request is successful
+        xhr.onload = function() {
+          // Parse the response as JSON
+          let response = JSON.parse(xhr.responseText);
+          // If the response is not empty, display the results
+          if (response.length > 0) {
+            // Get the first result from the response array
+            let show = response[0].show;
+            // Get the show id, name, image, and number of episodes
+            let showId = show.id;
+            let showName = show.name;
+            let showImage = show.image ? show.image.medium : "";
+            let showEpisodes = show._links.self.href + "/episodes";
+            // Create a new XMLHttpRequest object to get the episodes
+            let xhr2 = new XMLHttpRequest();
+            // Set the request method and the URL
+            xhr2.open("GET", showEpisodes);
+            // Define what to do when the request is successful
+            xhr2.onload = function() {
+              // Parse the response as JSON
+              let response2 = JSON.parse(xhr2.responseText);
+              // Group episodes by season
+              let episodesBySeason = {};
+              response2.forEach(function(episode) {
+                if (!episodesBySeason[episode.season]) {
+                  episodesBySeason[episode.season] = [];
+                }
+                episodesBySeason[episode.season].push(episode);
+              });
+              // Create HTML string for episodes and seasons
+              let html = "<div class='show'>";
+              for (let season in episodesBySeason) {
+                html += "<h2>Season " + season + "</h2>";
+                html += "<ul>";
+                episodesBySeason[season].forEach(function(episode) {
+                  html += "<li>" + episode.name + "</li>";
+                });
+                html += "</ul>";
+              }
+              html += "</div>";
+              // Set the innerHTML of the results element to the HTML string
+              document.getElementById("results").innerHTML = html;
+            };
+            // Send the second request
+            xhr2.send();
+          } else {
+            // If the response is empty, display a message that no show was found
+            document.getElementById("results").innerHTML = "<p>No show found with that name.</p>";
+          }
+        };
+        // Send the first request
+        xhr.send();
+      } else {
+        // If the input is empty, display a message that the input is required
+        document.getElementById("results").innerHTML = "<p>Please enter a show name.</p>";
+      }
+    }
+  </script>
+</body>
+</html>

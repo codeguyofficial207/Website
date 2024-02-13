@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heads or Tails Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333333;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Heads or Tails Generator</h1>
+    <button onclick="flipCoin()">Flip Coin</button>
+    <div id="result"></div>
+
+    <script>
+        function flipCoin() {
+            var resultDiv = document.getElementById('result');
+            var resultText;
+            var randomNum = Math.random();
+
+            if (randomNum < 0.5) {
+                resultText = 'Heads';
+            } else {
+                resultText = 'Tails';
+            }
+
+            resultDiv.textContent = 'Flipping...';
+            setTimeout(function() {
+                resultDiv.textContent = resultText;
+            }, 1000); // Delay for 1 second to simulate flipping
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Notes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .section-header {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+        }
+        .section-content {
+            padding: 10px;
+        }
+        .checkbox {
+            margin-right: 10px;
+        }
+        .delete-button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            <div class="section-header">Personal Tasks</div>
+            <div class="section-content" id="personalTasks">
+            </div>
+            <input type="text" id="personalTaskInput">
+            <button onclick="addTask('personalTasks', 'personalTaskInput')">Add Task</button>
+        </div>
+        <div class="section">
+            <div class="section-header" style="background-color: #2196F3;">Work Tasks</div>
+            <div class="section-content" id="workTasks">
+            </div>
+            <input type="text" id="workTaskInput">
+            <button onclick="addTask('workTasks', 'workTaskInput')">Add Task</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTasks('personalTasks');
+            loadTasks('workTasks');
+        });
+
+        function addTask(sectionId, inputId) {
+            var taskInput = document.getElementById(inputId);
+            var taskValue = taskInput.value.trim();
+            if (taskValue !== "") {
+                var section = document.getElementById(sectionId);
+                var taskId = sectionId + '-' + Date.now(); // Generate unique task ID
+                var checkbox = document.createElement('input');
+                checkbox.type = "checkbox";
+                checkbox.className = "checkbox";
+                checkbox.id = taskId;
+                var label = document.createElement('label');
+                label.textContent = taskValue;
+                label.setAttribute('for', taskId);
+                var deleteButton = document.createElement('button');
+                deleteButton.textContent = "Delete";
+                deleteButton.className = "delete-button";
+                deleteButton.onclick = function() {
+                    section.removeChild(checkbox);
+                    section.removeChild(label);
+                    section.removeChild(deleteButton);
+                    section.removeChild(lineBreak);
+                    saveTasks(sectionId);
+                };
+                var lineBreak = document.createElement('br');
+                section.appendChild(checkbox);
+                section.appendChild(label);
+                section.appendChild(deleteButton);
+                section.appendChild(lineBreak);
+                taskInput.value = "";
+                saveTasks(sectionId);
+            }
+        }
+
+        function deleteTask(taskId, sectionId) {
+            var section = document.getElementById(sectionId);
+            var task = document.getElementById(taskId);
+            var label = document.querySelector("label[for='" + taskId + "']");
+            var deleteButton = task.nextElementSibling;
+            section.removeChild(task);
+            section.removeChild(label);
+            section.removeChild(deleteButton);
+            section.removeChild(lineBreak);
+            saveTasks(sectionId);
+        }
+
+        function saveTasks(sectionId) {
+            var section = document.getElementById(sectionId);
+            var tasks = [];
+            var checkboxes = section.querySelectorAll('.checkbox');
+            checkboxes.forEach(function(checkbox) {
+                var taskId = checkbox.id;
+                var label = section.querySelector("label[for='" + taskId + "']").textContent;
+                tasks.push({ id: taskId, label: label });
+            });
+            localStorage.setItem(sectionId, JSON.stringify(tasks));
+        }
+
+        function loadTasks(sectionId) {
+            var section = document.getElementById(sectionId);
+            var tasks = JSON.parse(localStorage.getItem(sectionId)) || [];
+            tasks.forEach(function(task) {
+                var checkbox = document.createElement('input');
+                checkbox.type = "checkbox";
+                checkbox.className = "checkbox";
+                checkbox.id = task.id;
+                var label = document.createElement('label');
+                label.textContent = task.label;
+                label.setAttribute('for', task.id);
+                var deleteButton = document.createElement('button');
+                deleteButton.textContent = "Delete";
+                deleteButton.className = "delete-button";
+                deleteButton.onclick = function() {
+                    deleteTask(task.id, sectionId);
+                };
+                var lineBreak = document.createElement('br');
+                section.appendChild(checkbox);
+                section.appendChild(label);
+                section.appendChild(deleteButton);
+                section.appendChild(lineBreak);
+            });
+        }
+    </script>
+</body>
+</html>

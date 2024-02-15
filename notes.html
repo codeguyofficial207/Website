@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Taking Webpage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f8ff; /* Light blue */
+        }
+        h1 {
+            color: #008080; /* Teal */
+        }
+        #note-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px; /* Rounded corners */
+            resize: vertical;
+        }
+        #note-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .note-item {
+            background-color: #f8f8f8; /* Light grey */
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px; /* Rounded corners */
+        }
+        .delete-btn {
+            background-color: #dc3545; /* Red */
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            float: right;
+        }
+        .add-note-btn {
+            background-color: #008080; /* Teal */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+        }
+        .add-note-btn:hover {
+            background-color: #006666; /* Dark teal on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Note Taking Webpage</h1>
+    <textarea id="note-input" placeholder="Type your note here..."></textarea>
+    <button onclick="addNote()" class="add-note-btn">Add Note</button>
+    <ul id="note-list"></ul>
+
+    <script>
+        // Function to add a note
+        function addNote() {
+            var noteInput = document.getElementById('note-input');
+            var noteText = noteInput.value.trim();
+            
+            if (noteText !== '') {
+                var noteList = document.getElementById('note-list');
+                var li = document.createElement('li');
+                li.className = 'note-item';
+                li.textContent = noteText;
+                
+                var deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.onclick = function() {
+                    li.remove();
+                    saveNotes(); // Update local storage after deleting
+                };
+                
+                li.appendChild(deleteBtn);
+                noteList.appendChild(li);
+                
+                noteInput.value = '';
+                saveNotes(); // Update local storage after adding
+            }
+        }
+
+        // Function to save notes to local storage
+        function saveNotes() {
+            var notes = [];
+            var noteListItems = document.querySelectorAll('.note-item');
+            noteListItems.forEach(function(item) {
+                notes.push(item.textContent);
+            });
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+
+        // Function to load notes from local storage
+        function loadNotes() {
+            var notes = JSON.parse(localStorage.getItem('notes'));
+            if (notes) {
+                var noteList = document.getElementById('note-list');
+                notes.forEach(function(noteText) {
+                    var li = document.createElement('li');
+                    li.className = 'note-item';
+                    li.textContent = noteText;
+                    
+                    var deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.textContent = 'Delete';
+                    deleteBtn.onclick = function() {
+                        li.remove();
+                        saveNotes(); // Update local storage after deleting
+                    };
+                    
+                    li.appendChild(deleteBtn);
+                    noteList.appendChild(li);
+                });
+            }
+        }
+
+        // Load notes when the page loads
+        window.onload = loadNotes;
+    </script>
+</body>
+</html>

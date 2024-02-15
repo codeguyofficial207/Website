@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Lookup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Show Description Lookup</h1>
+        <form id="lookupForm">
+            <input type="text" id="showName" placeholder="Enter show name">
+            <input type="submit" value="Search">
+        </form>
+        <div class="result" id="showResult"></div>
+    </div>
+
+    <script>
+        document.getElementById("lookupForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let showName = document.getElementById("showName").value;
+            fetch(`https://api.tvmaze.com/search/shows?q=${showName}`)
+            .then(response => response.json())
+            .then(data => {
+                let resultDiv = document.getElementById("showResult");
+                resultDiv.innerHTML = "";
+                if (data.length > 0) {
+                    let show = data[0].show;
+                    resultDiv.innerHTML = `
+                        <h2>${show.name}</h2>
+                        <p>${show.summary}</p>
+                        <img src="${show.image ? show.image.medium : 'https://via.placeholder.com/210x295?text=No+Image'}" alt="${show.name}">
+                    `;
+                } else {
+                    resultDiv.innerHTML = "<p>No show found</p>";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

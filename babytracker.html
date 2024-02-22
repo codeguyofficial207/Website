@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diaper Changing Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label, input, select, textarea {
+            display: block;
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Diaper Changing Tracker</h1>
+    <form id="diaperForm">
+        <label for="babyName">Baby's Name:</label>
+        <input type="text" id="babyName" name="babyName" required>
+        <label for="babyGender">Baby's Gender:</label>
+        <select id="babyGender" name="babyGender" required>
+            <option value="girl">Girl</option>
+            <option value="boy">Boy</option>
+        </select>
+        <label for="diaperType">Diaper or Underwear:</label>
+        <select id="diaperType" name="diaperType" required>
+            <option value="diaper">Diaper</option>
+            <option value="underwear">Underwear</option>
+        </select>
+        <label for="changeType">Change Type:</label>
+        <select id="changeType" name="changeType" required>
+            <option value="wet">Wet</option>
+            <option value="dirty">Dirty</option>
+        </select>
+        <label for="notes">Notes:</label>
+        <textarea id="notes" name="notes"></textarea>
+        <label for="changeTime">Change Time:</label>
+        <input type="datetime-local" id="changeTime" name="changeTime" required>
+        <input type="submit" value="Submit">
+    </form>
+
+    <table id="trackerTable">
+        <thead>
+            <tr>
+                <th>Baby's Name</th>
+                <th>Baby's Gender</th>
+                <th>Diaper Type</th>
+                <th>Change Type</th>
+                <th>Notes</th>
+                <th>Change Time</th>
+            </tr>
+        </thead>
+        <tbody id="trackerBody">
+            <!-- Existing table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Load saved data from local storage when the page is loaded
+        window.onload = function() {
+            const savedData = JSON.parse(localStorage.getItem('diaperTracker')) || [];
+            const trackerBody = document.getElementById('trackerBody');
+
+            savedData.forEach(data => {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${data.babyName}</td>
+                    <td>${data.babyGender}</td>
+                    <td>${data.diaperType}</td>
+                    <td>${data.changeType}</td>
+                    <td>${data.notes}</td>
+                    <td>${data.changeTime}</td>
+                `;
+                trackerBody.appendChild(newRow);
+            });
+        };
+
+        document.getElementById('diaperForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const babyName = document.getElementById('babyName').value;
+            const babyGender = document.getElementById('babyGender').value;
+            const diaperType = document.getElementById('diaperType').value;
+            const changeType = document.getElementById('changeType').value;
+            const notes = document.getElementById('notes').value;
+            const changeTime = document.getElementById('changeTime').value;
+
+            // Create a new row in the table
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${babyName}</td>
+                <td>${babyGender}</td>
+                <td>${diaperType}</td>
+                <td>${changeType}</td>
+                <td>${notes}</td>
+                <td>${changeTime}</td>
+            `;
+            document.getElementById('trackerBody').appendChild(newRow);
+
+            // Save data to local storage
+            const newData = {
+                babyName,
+                babyGender,
+                diaperType,
+                changeType,
+                notes,
+                changeTime
+            };
+            const savedData = JSON.parse(localStorage.getItem('diaperTracker')) || [];
+            savedData.push(newData);
+            localStorage.setItem('diaperTracker', JSON.stringify(savedData));
+
+            // You can reset the form after submission if needed
+            // event.target.reset();
+        });
+    </script>
+</body>
+</html>

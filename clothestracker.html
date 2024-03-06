@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothes Checklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body onload="loadClothes()">
+    <h2>Clothes Checklist</h2>
+    <form id="clothesForm">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="girl">Girl</option>
+            <option value="boy">Boy</option>
+        </select><br><br>
+
+        <label for="type">Type of Clothing:</label>
+        <select id="type" name="type">
+            <option value="shirt">Shirt</option>
+            <option value="pants">Pants</option>
+            <option value="dress">Dress</option>
+            <option value="jacket">Jacket</option>
+            <option value="shoes">Shoes</option>
+            <option value="Underwear">Underwear</option>
+               <option value="accessory">Accessory</option>
+        </select><br><br>
+
+        <label for="size">Size:</label>
+        <input type="text" id="size" name="size"><br><br>
+
+        <label for="color">Color:</label>
+        <select id="color" name="color">
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+            <option value="pink">Pink</option>
+            <option value="black">Black</option>
+            <option value="white">White</option>
+            <option value="gray">Gary</option>
+            
+        </select><br><br>
+
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" name="brand"><br><br>
+
+        <input type="button" value="Submit" onclick="addClothes()">
+    </form>
+
+    <h2>Submitted Clothes</h2>
+    <table id="clothesTable">
+        <tr>
+            <th>Gender</th>
+            <th>Type</th>
+            <th>Size</th>
+            <th>Color</th>
+            <th>Brand</th>
+        </tr>
+    </table>
+
+    <script>
+        function addClothes() {
+            var gender = document.getElementById("gender").value;
+            var type = document.getElementById("type").value;
+            var size = document.getElementById("size").value;
+            var color = document.getElementById("color").value;
+            var brand = document.getElementById("brand").value;
+
+            var table = document.getElementById("clothesTable");
+            var newRow = table.insertRow(-1);
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+
+            cell1.innerHTML = gender;
+            cell2.innerHTML = type;
+            cell3.innerHTML = size;
+            cell4.innerHTML = color;
+            cell5.innerHTML = brand;
+
+            // Save data to local storage
+            var clothesData = JSON.parse(localStorage.getItem("clothes")) || [];
+            clothesData.push({ gender: gender, type: type, size: size, color: color, brand: brand });
+            localStorage.setItem("clothes", JSON.stringify(clothesData));
+        }
+
+        function loadClothes() {
+            var clothesData = JSON.parse(localStorage.getItem("clothes")) || [];
+
+            var table = document.getElementById("clothesTable");
+
+            clothesData.forEach(function(data) {
+                var newRow = table.insertRow(-1);
+
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+                var cell4 = newRow.insertCell(3);
+                var cell5 = newRow.insertCell(4);
+
+                cell1.innerHTML = data.gender;
+                cell2.innerHTML = data.type;
+                cell3.innerHTML = data.size;
+                cell4.innerHTML = data.color;
+                cell5.innerHTML = data.brand;
+            });
+        }
+    </script>
+</body>
+</html>
